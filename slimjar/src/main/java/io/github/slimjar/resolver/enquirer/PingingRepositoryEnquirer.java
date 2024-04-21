@@ -35,15 +35,21 @@ import io.github.slimjar.resolver.pinger.URLPinger;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public record PingingRepositoryEnquirer(
-    Repository repository,
-    PathResolutionStrategy dependencyURLCreationStrategy,
-    PathResolutionStrategy checksumURLCreationStrategy,
-    PathResolutionStrategy pomURLCreationStrategy,
-    URLPinger urlPinger
-
-) implements RepositoryEnquirer {
+public final class PingingRepositoryEnquirer implements RepositoryEnquirer {
     private static final ProcessLogger LOGGER = LogDispatcher.getMediatingLogger();
+    private final Repository repository;
+    private final PathResolutionStrategy dependencyURLCreationStrategy;
+    private final PathResolutionStrategy checksumURLCreationStrategy;
+    private final PathResolutionStrategy pomURLCreationStrategy;
+    private final URLPinger urlPinger;
+
+    public PingingRepositoryEnquirer(final Repository repository, final PathResolutionStrategy urlCreationStrategy, final PathResolutionStrategy checksumURLCreationStrategy, final PathResolutionStrategy pomURLCreationStrategy, final URLPinger urlPinger) {
+        this.repository = repository;
+        this.dependencyURLCreationStrategy = urlCreationStrategy;
+        this.checksumURLCreationStrategy = checksumURLCreationStrategy;
+        this.pomURLCreationStrategy = pomURLCreationStrategy;
+        this.urlPinger = urlPinger;
+    }
 
     @Override
     public ResolutionResult enquire(final Dependency dependency) {

@@ -48,7 +48,8 @@ public final class InjectableFactory {
 
         if (isJigsawActive && classLoader instanceof URLClassLoader) {
             injectable = new WrappedInjectableClassLoader((URLClassLoader) ApplicationBuilder.class.getClassLoader());
-        } else if (isUnsafeAvailable() && classLoader instanceof URLClassLoader urlClassLoader) {
+        } else if (isUnsafeAvailable() && classLoader instanceof URLClassLoader) {
+            URLClassLoader urlClassLoader = (URLClassLoader) classLoader;
             try {
                 injectable = UnsafeInjectable.create(urlClassLoader);
             } catch (final Exception exception) {

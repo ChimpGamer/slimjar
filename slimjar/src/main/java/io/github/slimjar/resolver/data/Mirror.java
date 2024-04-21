@@ -27,10 +27,23 @@ package io.github.slimjar.resolver.data;
 import java.net.URL;
 import java.util.Objects;
 
-public record Mirror(
-    URL mirroring,
-    URL original
-) {
+public final class Mirror {
+
+    private final URL mirroring;
+    private final URL original;
+
+    public Mirror(URL mirroring, URL original) {
+        this.mirroring = mirroring;
+        this.original = original;
+    }
+
+    public URL getMirroring() {
+        return mirroring;
+    }
+
+    public URL getOriginal() {
+        return original;
+    }
 
     @Override
     public String toString() {

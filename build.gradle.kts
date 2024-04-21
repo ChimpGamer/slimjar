@@ -14,6 +14,9 @@ allprojects {
     apply(plugin = "java")
     apply(plugin = "com.github.hierynomus.license-base")
 
+    java.sourceCompatibility = JavaVersion.VERSION_11
+    java.targetCompatibility = JavaVersion.VERSION_11
+
     repositories {
         mavenCentral()
     }
@@ -27,7 +30,7 @@ allprojects {
 
     plugins.withType<KotlinBasePlugin> {
         extensions.configure<KotlinProjectExtension> {
-            jvmToolchain(17)
+            //jvmToolchain(11)
             explicitApi()
         }
     }
@@ -39,15 +42,19 @@ allprojects {
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
     }
 
-    java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    //java.toolchain.languageVersion.set(JavaLanguageVersion.of(11))
 
     afterEvaluate {
         plugins.withType<MavenPublishPlugin> {
             extensions.getByName<PublishingExtension>("publishing").apply {
                 repositories.maven {
-                    name = "RacciRepo"
-                    url = URI("https://repo.racci.dev/${if (project.version.toString().endsWith("-SNAPSHOT")) "snapshots" else "releases"}")
-                    credentials(PasswordCredentials::class)
+                    name = "NetworkManagerRepo"
+                    url = URI("https://repo.networkmanager.xyz/repository/maven-${if (project.version.toString().endsWith("-SNAPSHOT")) "snapshots" else "releases"}")
+                    //credentials(PasswordCredentials::class)
+                    credentials {
+                        username = project.property("NETWORKMANAGER_NEXUS_USERNAME").toString()
+                        password = project.property("NETWORKMANAGER_NEXUS_PASSWORD").toString()
+                    }
                 }
             }
         }
